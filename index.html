@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        #sticky-header {
+            background-color: #333;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .hero-section {
+            background-color: #f8f9fa;
+            padding: 50px 20px; /* Adjusted padding to fit sticky header */
+            text-align: center;
+            margin-top: 80px; /* Adjusted margin to fit sticky header */
+        }
+
+        .carousel-item img {
+            max-width: 100%; /* Make images responsive */
+            height: 40vh; /* Set height to 40% of the viewport height */
+            margin: auto; /* Center images horizontally */
+            display: block; /* Remove extra space below inline images */
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+    <title>ChatGPT test website</title>
+</head>
+<body>
+    <header id="sticky-header">
+        <h1>ChatGPT test website</h1>
+    </header>
+
+    <div class="hero-section">
+        <h2>Welcome to Our Awesome Website!</h2>
+        <p>Discover the cutest cat images and more...</p>
+        <p><a href="https://chat.openai.com/share/252802e3-0129-4d33-93e8-dd2df1636dd1" target="_blank">Click here</a> to explore the ChatGPT conversation that generated this site in just 5 minutes!</p>
+    </div>
+
+    <div id="carouselExample" class="carousel slide content" data-ride="carousel">
+        <div class="carousel-inner">
+            <!-- Image carousel items will be dynamically added here -->
+        </div>
+        <a class="carousel-control-prev" href="#carouselExample" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExample" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+
+    <footer>
+        <p>&copy; 2023 ChatGPT test website</p>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var header = document.getElementById('sticky-header');
+            var sticky = header.offsetTop;
+
+            function handleScroll() {
+                if (window.pageYOffset > sticky) {
+                    header.classList.add('fixed');
+                } else {
+                    header.classList.remove('fixed');
+                }
+            }
+
+            window.addEventListener('scroll', handleScroll);
+
+            // Dynamically load images with random words from the given API
+            var carouselInner = document.querySelector('.carousel-inner');
+
+            for (var i = 1; i <= 5; i++) {
+                getRandomWord(i);
+            }
+
+            function getRandomWord(index) {
+                fetch('https://random-word-api.herokuapp.com/word')
+                    .then(response => response.json())
+                    .then(data => {
+                        var imgSrc = 'https://cataas.com/cat/gif/says/' + data[0] + '!';
+                        loadImage(imgSrc, index);
+                    })
+                    .catch(error => console.error('Error fetching random word:', error));
+            }
+
+            function loadImage(src, index) {
+                var carouselItem = document.createElement('div');
+                carouselItem.className = 'carousel-item';
+
+                var img = document.createElement('img');
+                img.src = src;
+                img.className = 'd-block w-100';
+
+                carouselItem.appendChild(img);
+                carouselInner.appendChild(carouselItem);
+
+                if (carouselInner.children.length === 1) {
+                    carouselItem.classList.add('active');
+                }
+            }
+        });
+    </script>
+</body>
+</html>
